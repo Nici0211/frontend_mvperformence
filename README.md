@@ -1,61 +1,63 @@
-# 🔧 MW Performance — Frontend
+# ⚙️ MVPerformance — Backend
 
-> Weboberfläche für die **MW Performance KFZ-Werkstatt** — gebaut mit React 19, TypeScript und Vite.
+> REST API für die **MVPerformance KFZ-Werkstatt** — gebaut mit Spring Boot, Java und PostgreSQL.
 
 ---
 
 ## 📋 Projektübersicht
 
-Dieses Repository enthält das Frontend der MW Performance Werkstatt-Webanwendung. Die Anwendung ermöglicht die Verwaltung von Kunden, Fahrzeugen, Aufträgen und Terminen über eine moderne, reaktive Benutzeroberfläche, die mit dem Spring Boot Backend kommuniziert.
+Die Autowerkstatt verfügt aktuell über keine digitale Plattform. Ziel ist es, eine moderne Website zu entwickeln, die Kunden eine einfache Terminbuchung ermöglicht und einen Admin-Bereich zur Verwaltung bereitstellt. Dieses Repository stellt die REST API bereit, auf die das React-Frontend zugreift.
+
+**Auftraggeber:** Devrim Gül
 
 ---
 
 ## 👥 Team
 
-| Name | Bereich | Aufgaben |
-|------|---------|---------|
-| **Nicolas** | API-Integration & UI | Verbindung zwischen Frontend und Backend (REST-Calls, Axios/Fetch Setup, Auth-Flow mit JWT), sowie Mitarbeit am UI-Design einzelner Komponenten |
-| **Jan** | Frontend Design & Logik | Hauptverantwortlich für das visuelle Design (Layout, Styling, Komponenten-Struktur) sowie die gesamte Frontend-Logik und Mechanik (State Management, Routing, Formulare, Validierung) |
+| Name | Aufgabe |
+|------|---------|
+| **Dominik** | Backend — Entwicklung der gesamten API, Datenbank, Security |
+| **Nicolas** | Verbindung zwischen Frontend und Backend |
+
+---
+
+## 🎯 Projektziele
+
+- Datenbank zur Verwaltung von Terminen, Kundenkonten und Angeboten
+- Login-System mit Spring Security und JWT
+- Admin-Bereich zur Verwaltung von Inhalten
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technologie | Version | Zweck |
-|-------------|---------|-------|
-| [React](https://react.dev/) | 19.x | UI Framework |
-| [TypeScript](https://www.typescriptlang.org/) | 5.9.x | Typsicherheit |
-| [Vite](https://vite.dev/) | 8.x | Build Tool & Dev Server |
-| ESLint | 9.x | Code Qualität |
+| Technologie | Zweck |
+|-------------|-------|
+| Spring Boot | Haupt-Framework |
+| Java 25 | Programmiersprache |
+| Spring Data JPA | Datenbankzugriff |
+| PostgreSQL | Datenbank |
+| Spring Security + JWT | Login & Authentifizierung |
+| Lombok | Weniger Boilerplate |
+| MapStruct | Entity ↔ DTO Mapping |
+| Springdoc / Swagger | API-Dokumentation |
 
 ---
 
 ## 🗂️ Projektstruktur
 
 ```
-frontend_mvperformence/
-├── public/
-│   ├── favicon.svg          # Seiten-Icon
-│   └── icons.svg            # SVG Icon Sprite
-├── src/
-│   ├── assets/              # Statische Ressourcen (Bilder, SVGs)
-│   ├── components/          # Wiederverwendbare UI-Komponenten
-│   ├── pages/               # Seiten-Komponenten (pro Route eine Seite)
-│   ├── services/            # API-Calls und Backend-Kommunikation (Nicolas)
-│   ├── hooks/               # Custom React Hooks
-│   ├── types/               # TypeScript Interfaces & Typen
-│   ├── utils/               # Hilfsfunktionen
-│   ├── App.tsx              # Haupt-Komponente & Routing
-│   ├── App.css              # Globale Styles
-│   ├── main.tsx             # Einstiegspunkt
-│   └── index.css            # Base Styles
-├── index.html
-├── vite.config.ts
-├── tsconfig.json
-└── package.json
-```
+src/main/java/at/htlkaindorf/backend_mwperformence/
+├── entity/        # Datenbank-Entities (JPA)
+├── dto/           # Request & Response Objekte
+├── repository/    # Datenbankzugriff (Spring Data)
+├── service/       # Business-Logik
+├── controller/    # REST Endpunkte
+└── security/      # JWT, Spring Security Konfiguration
 
-> ⚠️ Die Ordner `components/`, `pages/`, `services/`, `hooks/`, `types/` und `utils/` sind die empfohlene Zielstruktur — sie werden im Laufe der Entwicklung befüllt.
+src/main/resources/
+└── application.properties
+```
 
 ---
 
@@ -63,143 +65,67 @@ frontend_mvperformence/
 
 ### Voraussetzungen
 
-- **Node.js** ≥ 18.x
-- **npm** ≥ 9.x
-- Das **Backend** läuft lokal auf `http://localhost:8080` (siehe Backend-Repository)
+- **Java 25**
+- **PostgreSQL** lokal installiert und gestartet
+- Das **Frontend** läuft unter `http://localhost:5173`
 
-### Installation
+### Datenbank einrichten
 
-```bash
-# Repository klonen
-git clone <repo-url>
-cd frontend_mvperformence
-
-# Abhängigkeiten installieren
-npm install
+```sql
+CREATE DATABASE mw_performance;
+CREATE USER mw_user WITH PASSWORD 'deinPasswort';
+GRANT ALL PRIVILEGES ON DATABASE mw_performance TO mw_user;
 ```
 
-### Entwicklungsserver starten
+### `application.properties` befüllen
 
-```bash
-npm run dev
+```properties
+spring.application.name=backend_MWPerformence
+
+# Datenbank
+spring.datasource.url=jdbc:postgresql://localhost:5432/mw_performance
+spring.datasource.username=mw_user
+spring.datasource.password=deinPasswort
+
+# JPA
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# JWT
+jwt.secret=deinGeheimSchluessel
+jwt.expiration=86400000
 ```
 
-Die Anwendung ist dann unter `http://localhost:5173` erreichbar.
+> ⚠️ Keine echten Passwörter oder Secrets ins Repository committen!
 
-### Build für Produktion
-
-```bash
-npm run build
-```
-
-### Build-Vorschau
+### Anwendung starten
 
 ```bash
-npm run preview
+./mvnw spring-boot:run
 ```
 
-### Linting
+Die API läuft dann auf `http://localhost:8080`.
 
-```bash
-npm run lint
-```
+> 📖 Swagger UI: `http://localhost:8080/swagger-ui.html`
 
 ---
 
-## 🔌 Backend-Verbindung (Nicolas)
+## 🔐 Login-System (Dominik)
 
-Die Kommunikation mit dem Spring Boot Backend erfolgt über REST-Endpunkte. Authentifizierung läuft via **JWT-Token** (Bearer Auth).
-
-**Base URL (Entwicklung):** `http://localhost:8080/api`
-
-Die API-Service-Schicht befindet sich unter `src/services/`. Jeder Bereich der Anwendung hat seinen eigenen Service (z.B. `auftragService.ts`, `kundeService.ts`), der die Fetch/Axios-Logik kapselt.
-
-**Geplante Services:**
-
-| Service | Endpunkte |
-|---------|-----------|
-| `authService.ts` | Login, Token-Refresh, Logout |
-| `kundeService.ts` | CRUD für Kunden |
-| `fahrzeugService.ts` | CRUD für Fahrzeuge |
-| `auftragService.ts` | Aufträge erstellen, bearbeiten, Status ändern |
-| `terminService.ts` | Terminverwaltung |
-
----
-
-## 🎨 Design & UI-Komponenten (Jan)
-
-Das Design folgt einer professionellen, werkstatt-typischen Ästhetik — klare Struktur, gute Lesbarkeit, mobile-freundlich.
-
-**Geplante Hauptseiten:**
-
-| Seite | Beschreibung |
-|-------|-------------|
-| `Dashboard` | Übersicht: offene Aufträge, heutige Termine, Schnellzugriff |
-| `Kundenverwaltung` | Liste, Suche, Detail, Formular (Neu/Bearbeiten) |
-| `Fahrzeugverwaltung` | Fahrzeuge pro Kunde, Fahrzeughistorie |
-| `Auftragsverwaltung` | Auftrag anlegen, Positionen hinzufügen, Status-Tracking |
-| `Terminkalender` | Wochenansicht, Termin buchen |
-| `Login` | Authentifizierung mit JWT |
-
-**Komponenten-Konzept:**
-- Wiederverwendbare Formularkomponenten mit eingebetteter Validierung
-- Status-Badges für Auftragsstatus (OFFEN, IN_BEARBEITUNG, FERTIG, ABGEHOLT)
-- Modal-Dialoge für Schnellaktionen
-- Responsive Tabellen mit Filter- und Sortierfunktion
-
----
-
-## 🔐 Authentifizierung
-
-Der Login läuft über das Backend (`POST /api/auth/login`). Nach erfolgreichem Login wird ein JWT-Token gespeichert und bei jedem Request im `Authorization`-Header mitgeschickt.
+Authentifizierung läuft über **Spring Security** mit **JWT**. Nach dem Login erhält der Client einen Token, den er bei jedem Request mitsenden muss.
 
 ```
+POST /api/auth/login  →  gibt JWT-Token zurück
 Authorization: Bearer <token>
 ```
 
-Geschützte Routen werden client-seitig über einen Auth-Guard abgesichert.
-
----
-
-## 📡 API-Überblick (Verbindung zum Backend)
-
-| Methode | Endpunkt | Beschreibung |
-|---------|---------|-------------|
-| `POST` | `/api/auth/login` | Login, gibt JWT zurück |
-| `GET` | `/api/kunden` | Alle Kunden abrufen |
-| `POST` | `/api/kunden` | Neuen Kunden anlegen |
-| `GET` | `/api/fahrzeuge/{id}` | Fahrzeug nach ID |
-| `GET` | `/api/auftraege` | Alle Aufträge |
-| `POST` | `/api/auftraege` | Neuen Auftrag erstellen |
-| `PATCH` | `/api/auftraege/{id}/status` | Auftragsstatus ändern |
-| `GET` | `/api/termine` | Termine abrufen |
-
-> Vollständige API-Dokumentation: Swagger UI unter `http://localhost:8080/swagger-ui.html`
-
----
-
-## 🤝 Contributing
-
-1. Neuen Branch vom `main` erstellen: `git checkout -b feature/mein-feature`
-2. Änderungen committen: `git commit -m "feat: kurze Beschreibung"`
-3. Branch pushen: `git push origin feature/mein-feature`
-4. Pull Request erstellen
-
-**Commit-Konventionen:**
-
-| Prefix | Bedeutung |
-|--------|-----------|
-| `feat:` | Neues Feature |
-| `fix:` | Bugfix |
-| `style:` | Nur Styling/CSS Änderungen |
-| `refactor:` | Code-Umstrukturierung ohne Funktionsänderung |
-| `chore:` | Build, Konfiguration, Dependencies |
+**Rollen:** `ROLE_ADMIN` (Verwaltung) und `ROLE_KUNDE` (Terminbuchung)
 
 ---
 
 ## 🔗 Verwandte Repositories
 
-- **Backend:** [`backend_MWPerformence`](../backend_MWPerformence) — Spring Boot REST API mit PostgreSQL
+- **Frontend:** [`frontend_MVPerformance`](../frontend_MVPerformance) — React + TypeScript + Vite
 
 ---
 
