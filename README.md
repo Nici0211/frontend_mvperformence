@@ -1,12 +1,12 @@
-# ⚙️ MVPerformance — Backend
+# 🔧 MVPerformance — Frontend
 
-> REST API für die **MVPerformance KFZ-Werkstatt** — gebaut mit Spring Boot, Java und PostgreSQL.
+> Weboberfläche für die **MVPerformance KFZ-Werkstatt** — gebaut mit React, TypeScript und Vite.
 
 ---
 
 ## 📋 Projektübersicht
 
-Die Autowerkstatt verfügt aktuell über keine digitale Plattform. Ziel ist es, eine moderne Website zu entwickeln, die Kunden eine einfache Terminbuchung ermöglicht und einen Admin-Bereich zur Verwaltung bereitstellt. Dieses Repository stellt die REST API bereit, auf die das React-Frontend zugreift.
+Die Autowerkstatt verfügt aktuell über keine digitale Plattform. Kunden müssen Termine telefonisch oder vor Ort vereinbaren, was zeitaufwendig ist und zu organisatorischen Problemen führen kann. Ziel ist es, eine moderne Website zu entwickeln, die Kunden eine einfache Terminbuchung ermöglicht und einen Admin-Bereich zur Verwaltung bereitstellt.
 
 **Auftraggeber:** Devrim Gül
 
@@ -16,16 +16,16 @@ Die Autowerkstatt verfügt aktuell über keine digitale Plattform. Ziel ist es, 
 
 | Name | Aufgabe |
 |------|---------|
-| **Dominik** | Backend — Entwicklung der gesamten API, Datenbank, Security |
+| **Jan** | Frontend — Design & Logik der Benutzeroberfläche |
 | **Nicolas** | Verbindung zwischen Frontend und Backend |
 
 ---
 
 ## 🎯 Projektziele
 
-- Datenbank zur Verwaltung von Terminen, Kundenkonten und Angeboten
-- Login-System mit Spring Security und JWT
-- Admin-Bereich zur Verwaltung von Inhalten
+- Entwicklung einer modernen Website für die Autowerkstatt
+- Terminbuchung für Kunden über die Website
+- Admin-Bereich zur Verwaltung von Terminen, Kunden und Angeboten
 
 ---
 
@@ -33,31 +33,34 @@ Die Autowerkstatt verfügt aktuell über keine digitale Plattform. Ziel ist es, 
 
 | Technologie | Zweck |
 |-------------|-------|
-| Spring Boot | Haupt-Framework |
-| Java 25 | Programmiersprache |
-| Spring Data JPA | Datenbankzugriff |
-| PostgreSQL | Datenbank |
-| Spring Security + JWT | Login & Authentifizierung |
-| Lombok | Weniger Boilerplate |
-| MapStruct | Entity ↔ DTO Mapping |
-| Springdoc / Swagger | API-Dokumentation |
+| [React](https://react.dev/) | UI Framework |
+| TypeScript | Typsicherheit |
+| [Vite](https://vite.dev/) | Build Tool & Dev Server |
 
 ---
 
 ## 🗂️ Projektstruktur
 
 ```
-src/main/java/at/htlkaindorf/backend_mwperformence/
-├── entity/        # Datenbank-Entities (JPA)
-├── dto/           # Request & Response Objekte
-├── repository/    # Datenbankzugriff (Spring Data)
-├── service/       # Business-Logik
-├── controller/    # REST Endpunkte
-└── security/      # JWT, Spring Security Konfiguration
-
-src/main/resources/
-└── application.properties
+src/
+├── assets/          # Bilder, Icons
+├── components/      # Wiederverwendbare UI-Komponenten
+├── pages/           # Einzelne Seiten der Website
+├── services/        # API-Kommunikation mit dem Backend (Nicolas)
+├── App.tsx          # Haupt-Komponente & Routing
+└── main.tsx         # Einstiegspunkt
 ```
+
+---
+
+## 📄 Geplante Seiten
+
+| Seite | Beschreibung |
+|-------|-------------|
+| **Startseite** | Präsentation der Werkstatt, Leistungen, Google-Bewertungen |
+| **Terminbuchung** | Leistung wählen, Fahrzeugdaten eingeben, Datum & Uhrzeit wählen |
+| **Login / Registrierung** | Kundenkonto anlegen oder einloggen |
+| **Admin-Dashboard** | Übersicht offener Termine, Angebote verwalten, Kunden einsehen |
 
 ---
 
@@ -65,67 +68,39 @@ src/main/resources/
 
 ### Voraussetzungen
 
-- **Java 25**
-- **PostgreSQL** lokal installiert und gestartet
-- Das **Frontend** läuft unter `http://localhost:5173`
+- **Node.js** ≥ 18.x
+- Das **Backend** läuft lokal auf `http://localhost:8080`
 
-### Datenbank einrichten
-
-```sql
-CREATE DATABASE mw_performance;
-CREATE USER mw_user WITH PASSWORD 'deinPasswort';
-GRANT ALL PRIVILEGES ON DATABASE mw_performance TO mw_user;
-```
-
-### `application.properties` befüllen
-
-```properties
-spring.application.name=backend_MWPerformence
-
-# Datenbank
-spring.datasource.url=jdbc:postgresql://localhost:5432/mw_performance
-spring.datasource.username=mw_user
-spring.datasource.password=deinPasswort
-
-# JPA
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-
-# JWT
-jwt.secret=deinGeheimSchluessel
-jwt.expiration=86400000
-```
-
-> ⚠️ Keine echten Passwörter oder Secrets ins Repository committen!
-
-### Anwendung starten
+### Installation & Start
 
 ```bash
-./mvnw spring-boot:run
+# Abhängigkeiten installieren
+npm install
+
+# Entwicklungsserver starten
+npm run dev
 ```
 
-Die API läuft dann auf `http://localhost:8080`.
+Die Anwendung ist dann unter `http://localhost:5173` erreichbar.
 
-> 📖 Swagger UI: `http://localhost:8080/swagger-ui.html`
+```bash
+# Build für Produktion
+npm run build
+```
 
 ---
 
-## 🔐 Login-System (Dominik)
+## 🔌 Backend-Verbindung (Nicolas)
 
-Authentifizierung läuft über **Spring Security** mit **JWT**. Nach dem Login erhält der Client einen Token, den er bei jedem Request mitsenden muss.
+Die Kommunikation mit dem Spring Boot Backend erfolgt über REST. Authentifizierung läuft via **JWT-Token**.
 
-```
-POST /api/auth/login  →  gibt JWT-Token zurück
-Authorization: Bearer <token>
-```
-
-**Rollen:** `ROLE_ADMIN` (Verwaltung) und `ROLE_KUNDE` (Terminbuchung)
+Die API-Calls werden in `src/services/` gekapselt, damit Komponenten nichts von der HTTP-Logik wissen müssen.
 
 ---
 
 ## 🔗 Verwandte Repositories
 
-- **Frontend:** [`frontend_MVPerformance`](../frontend_MVPerformance) — React + TypeScript + Vite
+- **Backend:** [`backend_MVPerformance`](../backend_MVPerformance) — Spring Boot REST API
 
 ---
 
