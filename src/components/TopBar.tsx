@@ -24,7 +24,7 @@ export default function TopBar() {
         <Stack direction="row" spacing={0.6} alignItems="center">
           <LocationOnIcon sx={{ fontSize: 14, color: "text.secondary" }} />
           <Typography variant="caption" color="text.secondary">
-            Gaindorf an der Sulm 1, 8430 Leibnitz
+            Kaindorf an der Sulm 1, 8430 Leibnitz
           </Typography>
         </Stack>
 
