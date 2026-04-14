@@ -1,18 +1,19 @@
-import { ETerminStatus } from "../types/ETerminStatus";
+
+import { AppointmentStatus } from "../types/AppointmentStatus";
 
 export interface ITermin {
-  terminId: number;
-  kundeId: number;
-  kundeName: string;
-  leistung: string;
-  datum: string;
-  uhrzeit: string;
-  marke: string;
-  modell: string;
-  baujahr: number | null;
-  kennzeichen: string;
-  status: ETerminStatus;
-  preis: number | null;
-  notiz: string;
-  createdAt: string;
+    id: number;
+    customerId: number;
+    customerName: string;
+    serviceType: string;
+    date: string;           // "YYYY-MM-DD"
+    time: string;           // "HH:mm"
+    brand: string;
+    model: string;
+    year: number | null;
+    licensePlate: string;
+    status: AppointmentStatus;
+    price: number | null;
+    note: string;
+    createdAt: string;
 }
