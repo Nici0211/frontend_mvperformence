@@ -3,6 +3,8 @@ import {MOCK_TERMINE} from "../../mockdata/mock_data.ts";
 import {ITermin} from "../../interface/ITermin.ts";
 import "../../css/dashboard.css";
 import {useNavigate} from "react-router-dom";
+import {AppointmentStatus} from "../../types/AppointmentStatus.ts";
+import {fetchAppointments} from "../../api/appointmentApi.ts";
 
 /*
 * NAME : JAN HARKAMP
@@ -15,14 +17,27 @@ export default function DashboardPage() {
     const [termineHeute, setTermineHeute] = useState<number>(0);
     const [bewertungenCounter, setBewertungCounter] = useState<number>(612);
 
-    const [termine, setTermine] = useState<ITermin[]>(MOCK_TERMINE);
+    const [termine, setTermine] = useState<ITermin[]>([]);
 
     const navigate = useNavigate();
 
+
+
     useEffect(() => {
+        const getAppointments = async () => {
+            try {
+                const data = await fetchAppointments();
+                setTermine(data.content);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        getAppointments();
+
         const heute = new Date().toISOString().split("T")[0];
 
-        const todayCount = termine.filter((t) => t.datum === heute).length;
+        const todayCount = termine.filter((t) => t.date === heute).length;
         const newRequestCount = termine.filter((t) => t.status === "NEU").length
 
         setAnfragenCounter(newRequestCount);
@@ -32,8 +47,8 @@ export default function DashboardPage() {
     const onAccept = (terminId: number) => {
         setTermine((prev) =>
             prev.map((t) =>
-                t.terminId === terminId
-                    ? { ...t, status: "BESTAETIGT" }
+                t.id === terminId
+                    ? { ...t, status : "ABGESCHLOSSEN" }
                     : t
             )
         );
@@ -42,7 +57,7 @@ export default function DashboardPage() {
     const onDecline = (terminId: number) => {
         setTermine((prev) =>
             prev.map((t) =>
-                t.terminId === terminId
+                t.id === terminId
                     ? { ...t, status: "ABGELEHNT" }
                     : t
             )
@@ -99,14 +114,14 @@ export default function DashboardPage() {
                     <tbody>
                     {
                         termine.map((t) => (
-                            <tr key={t.terminId}>
-                                <td>{t.kundeName}</td>
-                                <td>{t.leistung}</td>
+                            <tr key={t.id}>
+                                <td>{t.customerName}</td>
+                                <td>{t.serviceType}</td>
                                 <td>
-                                    {t.marke} {t.modell} ({t.baujahr})
+                                    {t.brand} {t.model} ({t.createdAt})
                                 </td>
                                 <td>
-                                    {t.datum} · {t.uhrzeit}
+                                    {t.date} · {t.time}
                                 </td>
 
                                 {/* Status */}
@@ -117,7 +132,7 @@ export default function DashboardPage() {
                                                 ? "blue"
                                                 : t.status === "AUSSTEHEND"
                                                     ? "yellow"
-                                                    : t.status === "BESTAETIGT"
+                                                    : t.status === "BESTÄTIGT"
                                                         ? "green"
                                                         : "red"
                                         }`}
@@ -132,18 +147,18 @@ export default function DashboardPage() {
                                         <>
                                             <button
                                                 className="btn"
-                                                onClick={() => onAccept(t.terminId)}
+                                                onClick={() => onAccept(t.id)}
                                             >
                                                 Bestätigen
                                             </button>
                                             <button
                                                 className="btn danger"
-                                                onClick={() => onDecline(t.terminId)}
+                                                onClick={() => onDecline(t.id)}
                                             >
                                                 Ablehnen
                                             </button>
                                         </>
-                                    ) : t.status === "BESTAETIGT" ? (
+                                    ) : t.status === "BESTÄTIGT" ? (
                                         <span>-</span>
                                     ) : (
                                         <span>-</span> // bei ABGELEHNT nix mehr anzeigen

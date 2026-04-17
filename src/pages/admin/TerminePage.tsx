@@ -1,7 +1,8 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import "../../css/termine.css";
 import { MOCK_TERMINE } from "../../mockdata/mock_data";
 import { ITermin } from "../../interface/ITermin";
+import {fetchAppointments} from "../../api/appointmentApi.ts";
 
 /*
 * NAME : JAN HARKAMP
@@ -17,12 +18,25 @@ export default function TerminePage() {
 
     const heute = new Date().toISOString().split("T")[0];
 
+    useEffect(() => {
+        const getAppointments = async () => {
+            try {
+                const data = await fetchAppointments();
+                setTermine(data.content);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        getAppointments();
+    }, []);
+
     // Aktionen
     const onAccept = (terminId: number) => {
         setTermine((prev) =>
             prev.map((t) =>
-                t.terminId === terminId
-                    ? { ...t, status: "BESTAETIGT" }
+                t.id === terminId
+                    ? { ...t, status: "BESTÄTIGT" }
                     : t
             )
         );
@@ -31,7 +45,7 @@ export default function TerminePage() {
     const onDecline = (terminId: number) => {
         setTermine((prev) =>
             prev.map((t) =>
-                t.terminId === terminId
+                t.id === terminId
                     ? { ...t, status: "ABGELEHNT" }
                     : t
             )
@@ -44,14 +58,14 @@ export default function TerminePage() {
             if (filter === "ALLE") return true;
 
             if (filter === "HEUTE") {
-                return t.datum === heute && t.status !== "ABGELEHNT";
+                return t.date === heute && t.status !== "ABGELEHNT";
             }
 
             return t.status === filter;
         })
         .sort((a, b) => {
-            const dateA = new Date(`${a.datum}T${a.uhrzeit}`);
-            const dateB = new Date(`${b.datum}T${b.uhrzeit}`);
+            const dateA = new Date(`${a.date}T${a.time}`);
+            const dateB = new Date(`${b.date}T${b.time}`);
             return dateA.getTime() - dateB.getTime();
         });
 
@@ -108,14 +122,14 @@ export default function TerminePage() {
 
                 <tbody>
                 {paginated.map((t) => (
-                    <tr key={t.terminId}>
-                        <td>{t.kundeName}</td>
-                        <td>{t.leistung}</td>
+                    <tr key={t.id}>
+                        <td>{t.customerName}</td>
+                        <td>{t.serviceType}</td>
                         <td>
-                            {t.marke} {t.modell}
+                            {t.brand} {t.model}
                         </td>
                         <td>
-                            {t.datum} · {t.uhrzeit}
+                            {t.date} · {t.time}
                         </td>
 
                         {/* Status */}
@@ -126,7 +140,7 @@ export default function TerminePage() {
                             ? "blue"
                             : t.status === "AUSSTEHEND"
                                 ? "yellow"
-                                : t.status === "BESTAETIGT"
+                                : t.status === "BESTÄTIGT"
                                     ? "green"
                                     : "red"
                     }`}
@@ -141,18 +155,18 @@ export default function TerminePage() {
                                 <>
                                     <button
                                         className="btn"
-                                        onClick={() => onAccept(t.terminId)}
+                                        onClick={() => onAccept(t.id)}
                                     >
                                         Bestätigen
                                     </button>
                                     <button
                                         className="btn danger"
-                                        onClick={() => onDecline(t.terminId)}
+                                        onClick={() => onDecline(t.id)}
                                     >
                                         Ablehnen
                                     </button>
                                 </>
-                            ) : t.status === "BESTAETIGT" ? (
+                            ) : t.status === "BESTÄTIGT" ? (
                                 <button className="btn">Bearbeiten</button>
                             ) : (
                                 <span>-</span>
