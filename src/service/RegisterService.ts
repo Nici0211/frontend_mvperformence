@@ -18,7 +18,7 @@ const RegisterService = {
             password:             data.password,
             phone:                data.telefon,
             street:               data.strasse,
-            city:                 data.ort,
+            city:                 data.plz ? `${data.plz} ${data.ort}` : data.ort,
             vehicleBrand:         data.marke        || undefined,
             vehicleModel:         data.modell       || undefined,
             vehicleBuildYear:     data.baujahr      ?? undefined,
@@ -53,4 +53,3 @@ const RegisterService = {
 };
 
 export default RegisterService;
-
