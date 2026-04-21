@@ -1,8 +1,12 @@
-// src/api/appointmentApi.ts
 
 import api from "./api";
 import { AppointmentStatus } from "../types/AppointmentStatus";
 import { IAppointment } from "../interface/IAppointment";
+
+/*
+* NAME : Dominik Ranegger
+* DATE : 14.04
+* */
 
 export type { AppointmentStatus };
 
