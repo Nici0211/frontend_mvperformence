@@ -40,8 +40,8 @@ export default function AdminLayout() {
             >
                 <Toolbar>
                     <Typography fontWeight={800} fontSize={16}>
-                        <Box component="span" sx={{ color: "primary.main" }}>MW</Box>
-                        {" "}Performance
+                        <Box component="span" sx={{ color: "primary.main" }}>KFZ-Technik</Box>
+                        {" "}GDG
                     </Typography>
                 </Toolbar>
                 <Divider />
