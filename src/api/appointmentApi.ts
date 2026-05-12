@@ -13,29 +13,30 @@ export interface AppointmentPage {
     number: number;
 }
 
+// FIX: added /api prefix to match the backend route /api/appointments
 export const fetchAppointments = (
     status?: AppointmentStatus,
     page = 0,
     size = 5
 ): Promise<AppointmentPage> =>
-    api.get<AppointmentPage>("/appointments", {
+    api.get<AppointmentPage>("/api/appointments", {
         params: { ...(status ? { status } : {}), page, size },
     }).then((r) => r.data);
 
 export const fetchAppointmentById = (id: number): Promise<IAppointment> =>
-    api.get<IAppointment>(`/appointments/${id}`).then((r) => r.data);
+    api.get<IAppointment>(`/api/appointments/${id}`).then((r) => r.data);
 
 export const createAppointment = (
     body: Omit<IAppointment, "id" | "status">
 ): Promise<IAppointment> =>
-    api.post<IAppointment>("/appointments", body).then((r) => r.data);
+    api.post<IAppointment>("/api/appointments", body).then((r) => r.data);
 
 export const updateAppointmentStatus = (
     id: number,
     status: AppointmentStatus
 ): Promise<IAppointment> =>
-    api.patch<IAppointment>(`/appointments/${id}/status`, { status })
+    api.patch<IAppointment>(`/api/appointments/${id}/status`, { status })
         .then((r) => r.data);
 
 export const deleteAppointment = (id: number): Promise<void> =>
-    api.delete(`/appointments/${id}`).then(() => undefined);
+    api.delete(`/api/appointments/${id}`).then(() => undefined);
