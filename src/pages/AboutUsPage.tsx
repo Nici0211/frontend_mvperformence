@@ -1,4 +1,4 @@
+/** About us page of the workshop. */
 export default function AboutUsPage() {
-  // Ueber uns Seite der Werkstatt
   return <></>;
 }

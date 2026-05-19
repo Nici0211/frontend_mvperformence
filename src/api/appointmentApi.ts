@@ -1,14 +1,14 @@
-
 import api from "./api";
 import { AppointmentStatus } from "../types/AppointmentStatus";
 import { IAppointment } from "../interface/IAppointment";
+
+export type { AppointmentStatus };
 
 /*
 * NAME : Dominik Ranegger
 * DATE : 14.04
 * */
 
-export type { AppointmentStatus };
 
 export interface AppointmentPage {
     content: IAppointment[];
@@ -17,17 +17,20 @@ export interface AppointmentPage {
     number: number;
 }
 
-export const fetchAppointments = (
+export const getAppointments = (
     status?: AppointmentStatus,
     page = 0,
-    size = 5
+    size = 5,
+    todayOnly = false
 ): Promise<AppointmentPage> =>
     api.get<AppointmentPage>("/api/appointments", {
-        params: { ...(status ? { status } : {}), page, size },
+        params: {
+            ...(status ? { status } : {}),
+            ...(todayOnly ? { todayOnly: true } : {}),
+            page,
+            size
+        },
     }).then((r) => r.data);
-
-export const fetchAppointmentById = (id: number): Promise<IAppointment> =>
-    api.get<IAppointment>(`/api/appointments/${id}`).then((r) => r.data);
 
 export const createAppointment = (
     body: Omit<IAppointment, "id" | "status">
