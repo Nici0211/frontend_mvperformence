@@ -1,21 +1,29 @@
 import {useEffect, useState} from "react";
-import {getServices, IService, updateService} from "../../api/services.ts";
+import {createService, deleteService, getServices, IService, updateService} from "../../api/services.ts";
+import "../../css/AdminServicePage.css";
 
 export default function AdminServicesPage() {
-  // Leistungen verwalten: Erstellen, Bearbeiten, Loeschen
-    const [serviceSearch, setServiceSearch] = useState("");
-    const [services, setServices] = useState<IService[]>([])
-    const [selectedServiceForEditing, setSelectedServiceForEditing] = useState<IService>()
+    const [services, setServices] = useState<IService[]>([]);
+    const [selectedServiceForEditing, setSelectedServiceForEditing] = useState<IService>();
+    const [unfiltered, setUnfiltered] = useState<IService[]>([]);
+    const [selectedForDeleting, setSelectedForDeleting] = useState<IService>();
 
-    const [title, setTitle] = useState("")
-    const [icon, setIcon] = useState("")
-    const [description, setDescription] = useState("")
+    const [title, setTitle] = useState("");
+    const [icon, setIcon] = useState("");
+    const [description, setDescription] = useState("");
 
-    const handleEditSubmit = async () => {
-        if (!selectedServiceForEditing || selectedServiceForEditing.id === undefined) {
-            console.error("Service ohne ID kann nicht geupdated werden");
-            return;
-        }
+    const [newServiceClicked, setNewServiceClicked] = useState(false);
+
+    const reloadServices = async () => {
+        const serviceData = await getServices();
+        setUnfiltered(serviceData);
+        setServices(serviceData);
+    };
+
+    const handleEditSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (!selectedServiceForEditing || selectedServiceForEditing.id === undefined) return;
 
         const updatedService: Omit<IService, "id"> = {
             icon,
@@ -25,137 +33,259 @@ export default function AdminServicesPage() {
         };
 
         await updateService(selectedServiceForEditing.id, updatedService);
+        await reloadServices();
 
         setSelectedServiceForEditing(undefined);
         setIcon("");
         setTitle("");
         setDescription("");
-    }
+    };
+
+    const handleAddSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const newService: Omit<IService, "id"> = {
+            icon,
+            title,
+            subtitle: description,
+            sort: 0
+        };
+
+        await createService(newService);
+        await reloadServices();
+
+        setNewServiceClicked(false);
+        setIcon("");
+        setTitle("");
+        setDescription("");
+    };
 
     const onCancel = () => {
         setSelectedServiceForEditing(undefined);
         setIcon("");
         setTitle("");
         setDescription("");
-    }
+    };
 
-    const updateSearch = (text : string) => {
-        setServiceSearch(text);
-    }
+    const onAddCancel = () => {
+        setNewServiceClicked(false);
+        setIcon("");
+        setTitle("");
+        setDescription("");
+    };
+
+    const updateSearch = (text: string) => {
+        if (text === "") {
+            setServices(unfiltered);
+        } else {
+            setServices(
+                unfiltered.filter(v =>
+                    v.title.toLowerCase().includes(text.toLowerCase())
+                )
+            );
+        }
+    };
+
+    const handleNewServiceClick = () => {
+        setSelectedServiceForEditing(undefined);
+        setNewServiceClicked(true);
+        setIcon("");
+        setTitle("");
+        setDescription("");
+    };
+
+    const wantsToDelete = async () => {
+        if (!selectedForDeleting?.id) return;
+
+        await deleteService(selectedForDeleting.id);
+        await reloadServices();
+
+        setSelectedForDeleting(undefined);
+    };
 
     useEffect(() => {
-        const fetchServices = async () => {
-            const serviceData = await getServices();
-
-            setServices(serviceData);
-        }
-
-        fetchServices();
+        reloadServices();
     }, []);
 
-  return <>
-      <div>
-          <div>
-              <input placeholder={"Leistungen suchen..."} onChange={e => {
-                  updateSearch(e.target.value);
-              }}/>
+    return (
+        <div className="admin-services-page">
+            <div className="admin-main">
+                <div className="admin-header">
+                    <h1>Leistungen</h1>
 
-              <button>+Neue Leistungen</button>
-          </div>
+                    <button className="new-service-btn" onClick={handleNewServiceClick}>
+                        + Neue Leistung
+                    </button>
+                </div>
 
-          <div>
-              {selectedServiceForEditing ? (
-                  <table>
-                      <tr>
-                          <th>Id</th>
-                          <th>Icon</th>
-                          <th>Titel</th>
-                          <th>Untertitel</th>
-                          <th>Aktionen</th>
-                      </tr>
+                <div className="search-box">
+                    <span>⌕</span>
+                    <input
+                        placeholder="Leistung suchen..."
+                        onChange={e => updateSearch(e.target.value)}
+                    />
+                </div>
 
-                      {services.slice(0, 4).map(value => {
-                          return <tr>
-                              <td>{value.id}</td>
-                              <td>{value.icon}</td>
-                              <td>{value.title}</td>
-                              <td>{value.subtitle}</td>
-                              <td>
-                                  <button onClick={e =>
-                                  {setSelectedServiceForEditing(value)}}>
-                                      Bearbeiten</button>
-                              </td>
-                          </tr>
-                      })}
-                  </table>
-              ): (
-                  <table>
-                      <tr>
-                          <th>Id</th>
-                          <th>Icon</th>
-                          <th>Titel</th>
-                          <th>Untertitel</th>
-                          <th>Aktionen</th>
-                      </tr>
+                <div className="table-card">
+                    <table className="services-table">
+                        <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Icon</th>
+                            <th>Titel</th>
+                            <th>Untertitel</th>
+                            <th>Aktionen</th>
+                        </tr>
+                        </thead>
 
-                      {services.map(value => {
-                          return <tr>
-                              <td>{value.id}</td>
-                              <td>{value.icon}</td>
-                              <td>{value.title}</td>
-                              <td>{value.subtitle}</td>
-                              <td>
-                                  <button onClick={e =>
-                                  {setSelectedServiceForEditing(value)}}>
-                                      Bearbeiten</button>
-                              </td>
-                          </tr>
-                      })}
-                  </table>
-              )}
+                        <tbody>
+                        {(selectedServiceForEditing || newServiceClicked ? services.slice(0, 4) : services).map(value => (
+                            <tr key={value.id}>
+                                <td>{value.id}</td>
+                                <td>
+                                    <img src={`data:image/png;base64,${value.icon}`} alt="icon"/>
+                                </td>
+                                <td>{value.title}</td>
+                                <td>{value.subtitle}</td>
+                                <td>
+                                    <button
+                                        className="table-btn"
+                                        onClick={() => {
+                                            setSelectedServiceForEditing(value);
+                                            setNewServiceClicked(false);
+                                            setTitle(value.title);
+                                            setIcon(value.icon);
+                                            setDescription(value.subtitle ?? "");
+                                        }}
+                                    >
+                                        Bearbeiten
+                                    </button>
 
-              {selectedServiceForEditing && (
-                  <form onSubmit={handleEditSubmit}>
-                      <h2>Service Bearbeiten</h2>
+                                    <button
+                                        className="table-btn delete-small-btn"
+                                        onClick={() => setSelectedForDeleting(value)}
+                                    >
+                                        Löschen
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
 
-                      <div>
-                          <label htmlFor={"title"}>Titel</label>
-                          <input
-                              id={"title"}
-                              placeholder={"Titel"}
-                              type={"text"}
-                              value={title}
-                              required={true}
-                              onChange={e => {setTitle(e.target.value)}}
-                          />
-                          <label htmlFor={"Icon"}>Icon</label>
-                          <input
-                              id={"Icon"}
-                              placeholder={"Icon"}
-                              type={"text"}
-                              value={icon}
-                              required={true}
-                              onChange={e => {setIcon(e.target.value)}}
-                          />
-                      </div>
+                {selectedServiceForEditing ? (
+                    <form className="service-form" onSubmit={handleEditSubmit}>
+                        <h2>Service bearbeiten</h2>
 
-                      <label htmlFor={"description"}>Untertitel</label>
-                      <input
-                          id={"description"}
-                          placeholder={"Untertitel"}
-                          type={"text"}
-                          value={description}
-                          required={true}
-                          onChange={e => {setDescription(e.target.value)}}
-                      />
+                        <div className="form-row">
+                            <div>
+                                <label htmlFor="title">Titel *</label>
+                                <input
+                                    id="title"
+                                    placeholder="z.B. Ölwechsel"
+                                    type="text"
+                                    value={title}
+                                    required
+                                    onChange={e => setTitle(e.target.value)}
+                                />
+                            </div>
 
-                      <div>
-                          <button onClick={onCancel}>Abbrechen</button>
-                          <button type="submit">Speichern</button>
-                      </div>
-                  </form>
-              )}
-          </div>
-      </div>
-  </>;
+                            <div>
+                                <label htmlFor="icon">Icon</label>
+                                <input
+                                    id="icon"
+                                    placeholder="z.B. 🔧"
+                                    type="text"
+                                    value={icon}
+                                    required
+                                    onChange={e => setIcon(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <label htmlFor="description">Untertitel</label>
+                        <input
+                            id="description"
+                            placeholder="Kurze Beschreibung"
+                            type="text"
+                            value={description}
+                            required
+                            onChange={e => setDescription(e.target.value)}
+                        />
+
+                        <div className="form-actions">
+                            <button type="button" onClick={onCancel}>Abbrechen</button>
+                            <button type="submit">Speichern</button>
+                        </div>
+                    </form>
+                ) : newServiceClicked ? (
+                    <form className="service-form" onSubmit={handleAddSubmit}>
+                        <h2>Neue Leistung hinzufügen</h2>
+
+                        <div className="form-row">
+                            <div>
+                                <label htmlFor="title">Titel *</label>
+                                <input
+                                    id="title"
+                                    placeholder="z.B. Ölwechsel"
+                                    type="text"
+                                    value={title}
+                                    required
+                                    onChange={e => setTitle(e.target.value)}
+                                />
+                            </div>
+
+                            <div>
+                                <label htmlFor="icon">Icon</label>
+                                <input
+                                    id="icon"
+                                    placeholder="z.B. 🔧"
+                                    type="text"
+                                    value={icon}
+                                    required
+                                    onChange={e => setIcon(e.target.value)}
+                                />
+                            </div>
+                        </div>
+
+                        <label htmlFor="description">Untertitel</label>
+                        <input
+                            id="description"
+                            placeholder="Kurze Beschreibung"
+                            type="text"
+                            value={description}
+                            required
+                            onChange={e => setDescription(e.target.value)}
+                        />
+
+                        <div className="form-actions">
+                            <button type="button" onClick={onAddCancel}>Abbrechen</button>
+                            <button type="submit">Speichern</button>
+                        </div>
+                    </form>
+                ) : null}
+
+                {selectedForDeleting && (
+                    <div className="delete-box">
+                        <h2>Leistung löschen?</h2>
+                        <p>
+                            Willst du "{selectedForDeleting.title}" wirklich löschen?
+                            Diese Aktion kann nicht rückgängig gemacht werden.
+                        </p>
+
+                        <div className="delete-actions">
+                            <button onClick={() => setSelectedForDeleting(undefined)}>
+                                Abbrechen
+                            </button>
+
+                            <button onClick={wantsToDelete}>
+                                Löschen
+                            </button>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 }
