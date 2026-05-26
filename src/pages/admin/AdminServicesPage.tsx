@@ -137,6 +137,28 @@ export default function AdminServicesPage() {
                     />
                 </div>
 
+                {selectedForDeleting && (
+                    <div className="delete-box">
+                        <h2>Leistung löschen?</h2>
+                        <p>
+                            Willst du "{selectedForDeleting.title}" wirklich löschen?
+                            Diese Aktion kann nicht rückgängig gemacht werden.
+                        </p>
+
+                        <div className="delete-actions">
+                            <button onClick={() => setSelectedForDeleting(undefined)}>
+                                Abbrechen
+                            </button>
+
+                            <button onClick={wantsToDelete}>
+                                Löschen
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                <br></br>
+
                 <div className="table-card">
                     <table className="services-table">
                         <thead>
@@ -285,25 +307,6 @@ export default function AdminServicesPage() {
                     </form>
                 ) : null}
 
-                {selectedForDeleting && (
-                    <div className="delete-box">
-                        <h2>Leistung löschen?</h2>
-                        <p>
-                            Willst du "{selectedForDeleting.title}" wirklich löschen?
-                            Diese Aktion kann nicht rückgängig gemacht werden.
-                        </p>
-
-                        <div className="delete-actions">
-                            <button onClick={() => setSelectedForDeleting(undefined)}>
-                                Abbrechen
-                            </button>
-
-                            <button onClick={wantsToDelete}>
-                                Löschen
-                            </button>
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );
