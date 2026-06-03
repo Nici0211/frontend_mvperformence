@@ -175,7 +175,7 @@ export default function HomePage() {
                                                 sx={{ mt: 1.5, cursor: "pointer", fontWeight: 600 }}
                                                 onClick={() => navigate("/termin")}
                                             >
-                                                Termin anfragen →
+                                                Termin anfragen
                                             </Typography>
                                         </CardContent>
                                     </Card>
