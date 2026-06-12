@@ -145,7 +145,7 @@ export default function MyAccountPage() {
     const fullName = customer ? `${customer.firstName} ${customer.lastName}` : "";
 
     /**
-     * @description Opens the inline edit form for a given profile field and pre-fills
+     * Opens the inline edit form for a given profile field and pre-fills
      * the input(s) with the customer's current values.
      * @param field - Which field to edit: "name", "email", "phone", or "address"
      */
@@ -160,7 +160,7 @@ export default function MyAccountPage() {
     const cancelEdit = () => { setEditField(null); setEditValue(""); setEditValue2(""); };
 
     /**
-     * @description Persists the currently edited profile field to the backend via a PUT request.
+     * Persists the currently edited profile field to the backend via a PUT request.
      * On success the local state and localStorage are updated without a full reload.
      * @returns Promise that resolves once the save operation completes
      */
@@ -195,7 +195,7 @@ export default function MyAccountPage() {
     };
 
     /**
-     * @description Saves a vehicle — creates a new one if no editing target is set, otherwise updates.
+     * Saves a vehicle — creates a new one if no editing target is set, otherwise updates.
      * Refreshes the vehicle list from the backend on success.
      */
     const saveVehicle = async () => {
@@ -225,7 +225,7 @@ export default function MyAccountPage() {
     };
 
     /**
-     * @description Deletes a vehicle after the user confirms in the confirmation dialog.
+     * Deletes a vehicle after the user confirms in the confirmation dialog.
      */
     const confirmDeleteVehicle = async () => {
         if (!deleteVehicleTarget) return;
@@ -241,7 +241,7 @@ export default function MyAccountPage() {
     };
 
     /**
-     * @description Permanently deletes the user account, clears localStorage and redirects to home.
+     * Permanently deletes the user account, clears localStorage and redirects to home.
      */
     const confirmDeleteAccount = async () => {
         if (!customer) return;
@@ -269,7 +269,6 @@ export default function MyAccountPage() {
 
             <Grid container spacing={3} alignItems="flex-start">
 
-                {/* ── Left sidebar ── */}
                 <Grid size={{ xs: 12, md: 3 }}>
 
                     <Paper elevation={0} sx={{ p: 3, mb: 2, borderRadius: 3, border: "1px solid", borderColor: "divider", textAlign: "center" }}>
@@ -314,10 +313,8 @@ export default function MyAccountPage() {
 
                 </Grid>
 
-                {/* ── Right main content ── */}
                 <Grid size={{ xs: 12, md: 9 }}>
 
-                    {/* Persönliche Daten */}
                     <Paper elevation={0} sx={{ p: 3, mb: 3, borderRadius: 3, border: "1px solid", borderColor: "divider" }}>
                         <SectionLabel>Persönliche Daten</SectionLabel>
 
@@ -362,7 +359,6 @@ export default function MyAccountPage() {
                         )}
                     </Paper>
 
-                    {/* Meine Fahrzeuge */}
                     <Paper elevation={0} sx={{ p: 3, borderRadius: 3, border: "1px solid", borderColor: "divider" }}>
                         <SectionLabel>Meine Fahrzeuge</SectionLabel>
 
@@ -419,7 +415,6 @@ export default function MyAccountPage() {
                 </Grid>
             </Grid>
 
-            {/* ── Vehicle add/edit dialog ── */}
             <Dialog open={vehicleDialog.open} onClose={() => setVehicleDialog({ open: false, editing: null })} maxWidth="xs" fullWidth slotProps={{ paper: { sx: { borderRadius: 3 } } }}>
                 <DialogTitle fontWeight={700}>{vehicleDialog.editing ? "Fahrzeug bearbeiten" : "Fahrzeug hinzufügen"}</DialogTitle>
                 <DialogContent>
@@ -439,7 +434,6 @@ export default function MyAccountPage() {
                 </DialogActions>
             </Dialog>
 
-            {/* ── Delete vehicle confirmation dialog ── */}
             <Dialog open={!!deleteVehicleTarget} onClose={() => setDeleteVehicleTarget(null)} maxWidth="xs" fullWidth slotProps={{ paper: { sx: { borderRadius: 3 } } }}>
                 <DialogTitle fontWeight={700}>Fahrzeug löschen</DialogTitle>
                 <DialogContent>
@@ -453,7 +447,6 @@ export default function MyAccountPage() {
                 </DialogActions>
             </Dialog>
 
-            {/* ── Delete account confirmation dialog ── */}
             <Dialog open={deleteAccountOpen} onClose={() => setDeleteAccountOpen(false)} maxWidth="xs" fullWidth slotProps={{ paper: { sx: { borderRadius: 3 } } }}>
                 <DialogTitle fontWeight={700}>Konto löschen</DialogTitle>
                 <DialogContent>
