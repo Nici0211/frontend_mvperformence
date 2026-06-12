@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 /**
  * NAME : Dominik Ranegger (KI)
- * DATE : 14.04
+ * DATE : 10.06
  * */
 
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -28,7 +28,6 @@ L.Icon.Default.mergeOptions({
 
 const WERKSTATT_POS: [number, number] = [46.794200, 15.538571];
 
-// Real data from Impressum
 const CONTACT = {
     address: "Grazer Straße 136",
     city: "8430 Leibnitz, Österreich",

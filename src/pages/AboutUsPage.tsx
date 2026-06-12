@@ -17,7 +17,7 @@ import { useNavigate } from "react-router-dom";
 
 /**
 * NAME : Dominik Ranegger (KI)
-* DATE : 14.04
+* DATE : 10.06
 * */
 
 const OWNER_PHOTO: string | null = null;
