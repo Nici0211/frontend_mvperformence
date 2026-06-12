@@ -1,13 +1,6 @@
-/**
- * @file AuthService.ts
- * @description Authentifizierungs-Service — Login, Logout, Token- und Userdaten-Verwaltung.
- * Kommuniziert mit dem Spring Boot Backend über /api/auth/login.
- */
-
 import type { ICustomer } from "../interface/ICustomer";
 import { loginApi } from "../api/auth";
 
-// Typen
 
 export interface LoginRequest {
     email: string;
@@ -17,21 +10,18 @@ export interface LoginRequest {
 export interface LoginResponse {
     token: string;
     user: ICustomer;
-    // Alias damit LoginPage weiterhin result.kunde nutzen kann
     kunde: ICustomer;
 }
 
-// LocalStorage Keys
 
 const TOKEN_KEY = "token";
 const KUNDE_KEY = "loggedInKunde";
 
-// Auth Service
 
 const AuthService = {
     /**
-     * Login gegen das echte Backend (POST /api/auth/login).
-     * Speichert JWT-Token und User-Daten im localStorage.
+     * Logs in against the backend (POST /api/auth/login).
+     * Stores JWT token and user data in localStorage.
      */
     async login(data: LoginRequest): Promise<LoginResponse> {
         const res = await loginApi(data);
@@ -39,12 +29,11 @@ const AuthService = {
         localStorage.setItem(TOKEN_KEY, res.token);
         localStorage.setItem(KUNDE_KEY, JSON.stringify(res.user));
 
-        // "kunde" als Alias zurückgeben — LoginPage nutzt result.kunde.role
         return { ...res, kunde: res.user };
     },
 
     /**
-     * Logout: Token und Userdaten aus localStorage entfernen.
+     * Logout: removes token and user data from localStorage.
      */
     logout(): void {
         localStorage.removeItem(TOKEN_KEY);
@@ -52,14 +41,14 @@ const AuthService = {
     },
 
     /**
-     * Gibt den gespeicherten JWT-Token zurück (oder null).
+     * Returns the stored JWT token (or null).
      */
     getToken(): string | null {
         return localStorage.getItem(TOKEN_KEY);
     },
 
     /**
-     * Gibt den eingeloggten User zurück (oder null).
+     * Returns the logged-in user (or null).
      */
     getKunde(): ICustomer | null {
         const raw = localStorage.getItem(KUNDE_KEY);
@@ -72,14 +61,14 @@ const AuthService = {
     },
 
     /**
-     * Ist ein Benutzer eingeloggt?
+     * Returns whether a user is logged in.
      */
     isLoggedIn(): boolean {
         return !!this.getToken();
     },
 
     /**
-     * Ist der eingeloggte Benutzer ein Admin?
+     * Returns whether the logged-in user is an admin.
      */
     isAdmin(): boolean {
         return this.getKunde()?.role === "ADMIN";
@@ -87,4 +76,3 @@ const AuthService = {
 };
 
 export default AuthService;
-
