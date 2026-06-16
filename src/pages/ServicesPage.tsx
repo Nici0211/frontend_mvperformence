@@ -39,6 +39,7 @@ export default function ServicesPage() {
                             <div className="icon"><img src={`data:image/png;base64,${value.icon}`}/></div>
                             <h3>{value.title}</h3>
                             <p>{value.subtitle}</p>
+                            <p className="offer-price">{value.price} €</p>
                             <Link to={"/termin"} className="link">Termin anfragen →</Link>
                         </div>
                     ))}

@@ -11,6 +11,7 @@ export interface IService {
     icon: string;
     title: string;
     subtitle?: string;
+    price : number;
 }
 
 export const getServices = (): Promise<IService[]> =>

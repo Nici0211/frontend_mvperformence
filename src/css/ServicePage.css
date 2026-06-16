@@ -121,3 +121,10 @@
     cursor: pointer;
     text-decoration-line: none;
 }
+
+.offer-price {
+    color: #ff3c00;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}

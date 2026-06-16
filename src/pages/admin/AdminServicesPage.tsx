@@ -11,6 +11,7 @@ export default function AdminServicesPage() {
     const [title, setTitle] = useState("");
     const [icon, setIcon] = useState("");
     const [description, setDescription] = useState("");
+    const [price, setPrice] = useState(0)
 
     const [newServiceClicked, setNewServiceClicked] = useState(false);
 
@@ -28,7 +29,8 @@ export default function AdminServicesPage() {
         const updatedService: Omit<IService, "id"> = {
             icon,
             title,
-            subtitle: description
+            subtitle: description,
+            price : price
         };
 
         await updateService(selectedServiceForEditing.id, updatedService);
@@ -38,6 +40,7 @@ export default function AdminServicesPage() {
         setIcon("");
         setTitle("");
         setDescription("");
+        setPrice(0);
     };
 
     const handleAddSubmit = async (e: React.FormEvent) => {
@@ -46,7 +49,8 @@ export default function AdminServicesPage() {
         const newService: Omit<IService, "id"> = {
             icon,
             title,
-            subtitle: description
+            subtitle: description,
+            price : price
         };
 
         await createService(newService);
@@ -56,6 +60,7 @@ export default function AdminServicesPage() {
         setIcon("");
         setTitle("");
         setDescription("");
+        setPrice(0);
     };
 
     const onCancel = () => {
@@ -63,6 +68,7 @@ export default function AdminServicesPage() {
         setIcon("");
         setTitle("");
         setDescription("");
+        setPrice(0)
     };
 
     const onAddCancel = () => {
@@ -70,6 +76,7 @@ export default function AdminServicesPage() {
         setIcon("");
         setTitle("");
         setDescription("");
+        setPrice(0);
     };
 
     const updateSearch = (text: string) => {
@@ -90,6 +97,7 @@ export default function AdminServicesPage() {
         setIcon("");
         setTitle("");
         setDescription("");
+        setPrice(0);
     };
 
     const wantsToDelete = async () => {
@@ -167,6 +175,7 @@ export default function AdminServicesPage() {
                             <th>Icon</th>
                             <th>Titel</th>
                             <th>Untertitel</th>
+                            <th>Preis</th>
                             <th>Aktionen</th>
                         </tr>
                         </thead>
@@ -180,6 +189,7 @@ export default function AdminServicesPage() {
                                 </td>
                                 <td>{value.title}</td>
                                 <td>{value.subtitle}</td>
+                                <td>{value.price} €</td>
                                 <td>
                                     <button
                                         className="table-btn"
@@ -189,6 +199,7 @@ export default function AdminServicesPage() {
                                             setTitle(value.title);
                                             setIcon(value.icon);
                                             setDescription(value.subtitle ?? "");
+                                            setPrice(value.price);
                                         }}
                                     >
                                         Bearbeiten
@@ -251,6 +262,16 @@ export default function AdminServicesPage() {
                             onChange={e => setDescription(e.target.value)}
                         />
 
+                        <label htmlFor="price">Preis *</label>
+                        <input
+                            id="price"
+                            placeholder="100"
+                            type="number"
+                            value={price}
+                            required
+                            onChange={e => setPrice(Number(e.target.value))}
+                        />
+
                         <div className="form-actions">
                             <button type="button" onClick={onCancel}>Abbrechen</button>
                             <button type="submit">Speichern</button>
@@ -298,6 +319,16 @@ export default function AdminServicesPage() {
                             value={description}
                             required
                             onChange={e => setDescription(e.target.value)}
+                        />
+
+                        <label htmlFor="price">Preis *</label>
+                        <input
+                            id="price"
+                            placeholder="100"
+                            type="number"
+                            value={price}
+                            required
+                            onChange={e => setPrice(Number(e.target.value))}
                         />
 
                         <div className="form-actions">
