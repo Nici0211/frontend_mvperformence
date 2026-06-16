@@ -166,3 +166,86 @@ h1 {
     background: #3a1212;
     color: #ff4d4f;
 }
+
+.dashboard-offers-section {
+    margin-top: 40px;
+}
+
+.dashboard-offers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.dashboard-offers-header h2 {
+    margin: 0;
+}
+
+.dashboard-offers-header button {
+    background: transparent;
+    border: 1px solid #333;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.dashboard-offers-header button:hover {
+    background: #1c222b;
+}
+
+.dashboard-offers-grid {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: stretch;
+}
+
+.dashboard-offer-card {
+    width: 220px;
+    background: #11161d;
+    border-radius: 10px;
+    padding: 18px;
+}
+
+.dashboard-offer-card h3 {
+    margin: 0 0 14px;
+    font-size: 16px;
+}
+
+.dashboard-offer-price {
+    color: #ff4d4f;
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 8px;
+}
+
+.dashboard-offer-services {
+    color: #888;
+    font-size: 13px;
+    margin: 0 0 16px;
+}
+
+.dashboard-offer-edit {
+    background: transparent;
+    border: 1px solid #444;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.dashboard-offer-edit:hover {
+    background: #1c222b;
+}
+
+.dashboard-new-offer {
+    align-self: center;
+    background: transparent;
+    border: none;
+    color: #ff4d4f;
+    font-weight: bold;
+    cursor: pointer;
+}
