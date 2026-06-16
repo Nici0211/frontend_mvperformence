@@ -1,14 +1,9 @@
 import api from "./api";
+import {IService} from "./services.ts";
 
-export interface IService {
-    id: number;
-    icon: string;
-    title: string;
-    subtitle: string;
-}
 
 export interface IOffer {
-    id?: number;
+    id: number;
     title: string;
     description: string;
     price: number;

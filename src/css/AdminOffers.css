@@ -1,0 +1,258 @@
+.offers-page {
+    padding: 30px;
+    background: #0d0d0d;
+    min-height: 100vh;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.offers-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.offers-header h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.new-offer-btn {
+    padding: 12px 22px;
+    background: transparent;
+    border: 1px solid #555;
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.new-offer-btn:hover {
+    background: #222;
+}
+
+.offers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.offer-card {
+    background: #1a1a1a;
+    border: 1px solid #2c2c2c;
+    border-radius: 8px;
+    padding: 20px;
+    transition: 0.2s;
+}
+
+.offer-card:hover {
+    border-color: #444;
+    transform: translateY(-2px);
+}
+
+.offer-card h3 {
+    margin-top: 0;
+    margin-bottom: 14px;
+    font-size: 22px;
+}
+
+.service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 18px;
+}
+
+.service-tag {
+    background: #252525;
+    color: #cfcfcf;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+.offer-price {
+    color: #ff3c1f;
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.status.active {
+    background: #163d1e;
+    color: #54ff7a;
+}
+
+.status.inactive {
+    background: #3d1717;
+    color: #ff6565;
+}
+
+.offer-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.offer-actions button {
+    flex: 1;
+    padding: 14px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid #555;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 15px;
+}
+
+.offer-actions button:hover {
+    background: #2a2a2a;
+}
+
+.edit-btn:hover {
+    border-color: #4d9eff;
+}
+
+.delete-btn:hover {
+    border-color: #ff5252;
+}
+
+/* ========================= */
+/* EDIT OFFER FORM */
+/* ========================= */
+
+.edit-offer-container {
+    background: #0d0d0d;
+    min-height: 100vh;
+    padding: 30px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.edit-offer-form {
+    max-width: 560px;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 24px;
+}
+
+.edit-offer-form h2 {
+    margin-top: 0;
+    margin-bottom: 28px;
+    font-size: 20px;
+}
+
+.edit-offer-form label {
+    display: block;
+    margin-bottom: 8px;
+    margin-top: 18px;
+    color: #888;
+    font-size: 14px;
+}
+
+.edit-offer-form input,
+.edit-offer-form textarea {
+    width: 100%;
+    box-sizing: border-box;
+    background: #292929;
+    border: 1px solid #444;
+    color: white;
+    border-radius: 9px;
+    padding: 11px 13px;
+    font-size: 15px;
+    outline: none;
+}
+
+.edit-offer-form textarea {
+    resize: none;
+    min-height: 88px;
+}
+
+.price-status-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.status-container {
+    display: flex;
+    gap: 12px;
+}
+
+.status-btn {
+    flex: 1;
+    background: #292929;
+    border: 1px solid #555;
+    color: #888;
+    border-radius: 9px;
+    padding: 11px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.status-btn.active {
+    border-color: #249c46;
+    color: #35d363;
+}
+
+.status-btn.inactive {
+    border-color: #555;
+    color: #888;
+}
+
+.services-select {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.service-btn {
+    background: #2b2b2b;
+    color: #aaa;
+    border: 1px solid #555;
+    border-radius: 999px;
+    padding: 6px 13px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.service-btn.selected {
+    color: #ff3c3c;
+    border-color: #ff3c3c;
+    background: rgba(255, 60, 60, 0.08);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.cancel-btn,
+.save-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 9px;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.cancel-btn:hover,
+.save-btn:hover {
+    background: #2a2a2a;
+}
