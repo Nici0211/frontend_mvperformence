@@ -1,10 +1,11 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {getServices, IService} from "../api/services";
 import "../css/ServicePage.css";
 
 export default function ServicesPage() {
     const [services, setServices] = useState<IService[]>([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -16,13 +17,19 @@ export default function ServicesPage() {
                 setServices([]);
             }
         };
-
         fetchServices();
     }, []);
 
     return (
         <div className="services-page">
             <section className="services">
+
+                <div className="breadcrumb">
+                    <span onClick={() => navigate("/")}>Startseite</span>
+                    <span> › </span>
+                    <span className="breadcrumb-active">Leistungen</span>
+                </div>
+
                 <p className="subtitle">WAS WIR ANBIETEN</p>
                 <h2>Unsere Leistungen</h2>
                 <p className="description">

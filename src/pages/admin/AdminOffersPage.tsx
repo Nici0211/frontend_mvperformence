@@ -29,14 +29,12 @@ export default function AdminOffersPage() {
             setOffers(await getOffers());
             setServices(await getServices());
         };
-
         loadData();
     }, []);
 
     const onCreateClick = () => {
         setOfferToEdit(undefined);
         setIsCreating(true);
-
         setTitle("");
         setDescription("");
         setPrice(0);
@@ -48,7 +46,6 @@ export default function AdminOffersPage() {
     const onEditClick = (offer: IOffer) => {
         setIsCreating(false);
         setOfferToEdit(offer);
-
         setTitle(offer.title);
         setDescription(offer.description);
         setPrice(offer.price);
@@ -57,9 +54,8 @@ export default function AdminOffersPage() {
         setSelectedServices(offer.services);
     };
 
-    const isSelected = (service: IService) => {
-        return selectedServices.some(s => s.id === service.id);
-    };
+    const isSelected = (service: IService) =>
+        selectedServices.some(s => s.id === service.id);
 
     const onServiceClick = (service: IService) => {
         setSelectedServices(prev =>
@@ -72,7 +68,6 @@ export default function AdminOffersPage() {
     const onCancelClick = () => {
         setOfferToEdit(undefined);
         setIsCreating(false);
-
         setTitle("");
         setDescription("");
         setPrice(0);
@@ -81,9 +76,7 @@ export default function AdminOffersPage() {
         setSelectedServices([]);
     };
 
-    const onSubmitClick = async (
-        event: React.FormEvent<HTMLFormElement>
-    ) => {
+    const onSubmitClick = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const body: Omit<IOffer, "id" | "createdAt"> = {
@@ -107,13 +100,8 @@ export default function AdminOffersPage() {
 
     const deleteOffer = async () => {
         if (!offerToDelete?.id) return;
-
         await deleteOfferAPI(offerToDelete.id);
-
-        setOffers(prev =>
-            prev.filter(offer => offer.id !== offerToDelete.id)
-        );
-
+        setOffers(prev => prev.filter(offer => offer.id !== offerToDelete.id));
         setOfferToDelete(undefined);
     };
 
@@ -121,14 +109,9 @@ export default function AdminOffersPage() {
         <>
             {offerToEdit || isCreating ? (
                 <div className="edit-offer-container">
-                    <form
-                        className="edit-offer-form"
-                        onSubmit={onSubmitClick}
-                    >
+                    <form className="edit-offer-form" onSubmit={onSubmitClick}>
                         <h2>
-                            {isCreating
-                                ? "Neues Angebot erstellen"
-                                : `${title} bearbeiten`}
+                            {isCreating ? "Neues Angebot erstellen" : `${title} bearbeiten`}
                         </h2>
 
                         <label>Titel</label>
@@ -152,56 +135,33 @@ export default function AdminOffersPage() {
                                     type="number"
                                     required
                                     value={price === 0 ? "" : price}
-                                    onChange={e => {
-                                        if (e.target.value === "") {
-                                            setPrice(0);
-                                        } else {
-                                            setPrice(Number(e.target.value));
-                                        }
-                                    }}
+                                    onChange={e => setPrice(e.target.value === "" ? 0 : Number(e.target.value))}
                                 />
                             </div>
 
-                            {/* NEU */}
                             <div className="price-box">
                                 <label>Dauer (min)</label>
                                 <input
                                     type="number"
                                     required
                                     value={duration === 0 ? "" : duration}
-                                    onChange={e => {
-                                        if (e.target.value === "") {
-                                            setDuration(0);
-                                        } else {
-                                            setDuration(Number(e.target.value));
-                                        }
-                                    }}
+                                    onChange={e => setDuration(e.target.value === "" ? 0 : Number(e.target.value))}
                                 />
                             </div>
 
                             <div className="status-box">
                                 <label>Status</label>
-
                                 <div className="status-container">
                                     <button
                                         type="button"
-                                        className={
-                                            status
-                                                ? "status-btn active"
-                                                : "status-btn"
-                                        }
+                                        className={status ? "status-btn active" : "status-btn"}
                                         onClick={() => setStatus(true)}
                                     >
                                         ● Aktiv
                                     </button>
-
                                     <button
                                         type="button"
-                                        className={
-                                            !status
-                                                ? "status-btn inactive"
-                                                : "status-btn"
-                                        }
+                                        className={!status ? "status-btn inactive" : "status-btn"}
                                         onClick={() => setStatus(false)}
                                     >
                                         ● Inaktiv
@@ -211,17 +171,12 @@ export default function AdminOffersPage() {
                         </div>
 
                         <label>Services zuweisen</label>
-
                         <div className="services-select">
                             {services.map(service => (
                                 <button
                                     key={service.id}
                                     type="button"
-                                    className={
-                                        isSelected(service)
-                                            ? "service-btn selected"
-                                            : "service-btn"
-                                    }
+                                    className={isSelected(service) ? "service-btn selected" : "service-btn"}
                                     onClick={() => onServiceClick(service)}
                                 >
                                     {service.title}
@@ -230,18 +185,10 @@ export default function AdminOffersPage() {
                         </div>
 
                         <div className="form-actions">
-                            <button
-                                type="button"
-                                className="cancel-btn"
-                                onClick={onCancelClick}
-                            >
+                            <button type="button" className="cancel-btn" onClick={onCancelClick}>
                                 Abbrechen
                             </button>
-
-                            <button
-                                type="submit"
-                                className="save-btn"
-                            >
+                            <button type="submit" className="save-btn">
                                 {isCreating ? "Hinzufügen" : "Speichern"}
                             </button>
                         </div>
@@ -251,64 +198,43 @@ export default function AdminOffersPage() {
                 <div className="offers-page">
                     <div className="offers-header">
                         <h2>Aktuelle Angebote</h2>
-
-                        <button
-                            className="new-offer-btn"
-                            onClick={onCreateClick}
-                        >
+                        <button className="new-offer-btn" onClick={onCreateClick}>
                             + Neues Angebot
                         </button>
                     </div>
 
                     <div className="offers-grid">
                         {offers.map(offer => (
-                            <div className="offer-card" key={offer.id}>
+                            <div
+                                className="offer-card"
+                                key={offer.id}
+                                style={{ display: "flex", flexDirection: "column" }}
+                            >
                                 <h3>{offer.title}</h3>
 
                                 <div className="service-tags">
                                     {offer.services.map(service => (
-                                        <span
-                                            key={service.id}
-                                            className="service-tag"
-                                        >
+                                        <span key={service.id} className="service-tag">
                                             {service.title}
                                         </span>
                                     ))}
                                 </div>
 
-                                <div className="offer-price">
-                                    € {offer.price}
-                                </div>
+                                <div className="offer-price">€ {offer.price}</div>
 
-                                {/* NEU */}
-                                {offer.duration && (
-                                    <div className="offer-duration">
-                                        ⏱ {offer.duration} min
-                                    </div>
+                                {offer.duration != null && offer.duration > 0 && (
+                                    <div className="offer-duration">⏱ {offer.duration} min</div>
                                 )}
 
-                                <span
-                                    className={
-                                        offer.active
-                                            ? "status active"
-                                            : "status inactive"
-                                    }
-                                >
+                                <span className={offer.active ? "status active" : "status inactive"}>
                                     ● {offer.active ? "Aktiv" : "Inaktiv"}
                                 </span>
 
-                                <div className="offer-actions">
-                                    <button
-                                        className="edit-btn"
-                                        onClick={() => onEditClick(offer)}
-                                    >
+                                <div className="offer-actions" style={{ marginTop: "auto" }}>
+                                    <button className="edit-btn" onClick={() => onEditClick(offer)}>
                                         ✏ Bearbeiten
                                     </button>
-
-                                    <button
-                                        className="delete-btn"
-                                        onClick={() => setOfferToDelete(offer)}
-                                    >
+                                    <button className="delete-btn" onClick={() => setOfferToDelete(offer)}>
                                         🗑 Löschen
                                     </button>
                                 </div>
@@ -322,27 +248,16 @@ export default function AdminOffersPage() {
                 <div className="modal-overlay">
                     <div className="delete-modal">
                         <div className="delete-icon">🗑</div>
-
                         <h2>Angebot löschen?</h2>
-
                         <p>
                             Möchtest du „{offerToDelete.title}" wirklich löschen?
                             Diese Aktion kann nicht rückgängig gemacht werden.
                         </p>
-
                         <div className="modal-actions">
-                            <button
-                                type="button"
-                                onClick={() => setOfferToDelete(undefined)}
-                            >
+                            <button type="button" onClick={() => setOfferToDelete(undefined)}>
                                 Abbrechen
                             </button>
-
-                            <button
-                                type="button"
-                                className="confirm-delete-btn"
-                                onClick={deleteOffer}
-                            >
+                            <button type="button" className="confirm-delete-btn" onClick={deleteOffer}>
                                 Löschen
                             </button>
                         </div>

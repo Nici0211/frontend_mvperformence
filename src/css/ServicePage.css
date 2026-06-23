@@ -118,3 +118,23 @@
 .cta-btn:hover {
     background: #e03500;
 }
+
+.breadcrumb {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 24px;
+    cursor: default;
+}
+
+.breadcrumb span:first-child {
+    cursor: pointer;
+    color: #888;
+}
+
+.breadcrumb span:first-child:hover {
+    color: #fff;
+}
+
+.breadcrumb-active {
+    color: #ccc;
+}

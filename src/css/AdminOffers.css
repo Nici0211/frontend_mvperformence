@@ -1,338 +1,475 @@
+/* ─── Offers Page ─────────────────────────────────────────── */
+
 .offers-page {
-    padding: 30px;
-    background: #0d0d0d;
+    padding: 2rem 2.5rem;
     min-height: 100vh;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    background: #111111;
 }
 
 .offers-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    justify-content: space-between;
+    margin-bottom: 2rem;
 }
 
 .offers-header h2 {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.01em;
     margin: 0;
-    font-size: 28px;
 }
 
 .new-offer-btn {
-    padding: 12px 22px;
-    background: transparent;
-    border: 1px solid #555;
-    border-radius: 12px;
-    color: white;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #e63232;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 0.55rem 1.2rem;
+    font-size: 0.88rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
-    font-size: 15px;
+    transition: background 0.18s, transform 0.12s;
 }
 
 .new-offer-btn:hover {
-    background: #222;
+    background: #c92828;
+    transform: translateY(-1px);
 }
+
+/* ─── Grid ────────────────────────────────────────────────── */
 
 .offers-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 24px;
+    gap: 1.25rem;
 }
+
+/* ─── Card ────────────────────────────────────────────────── */
 
 .offer-card {
     background: #1a1a1a;
-    border: 1px solid #2c2c2c;
-    border-radius: 8px;
-    padding: 20px;
-    transition: 0.2s;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    padding: 1.4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: border-color 0.18s, transform 0.18s;
 }
 
 .offer-card:hover {
-    border-color: #444;
+    border-color: #3a3a3a;
     transform: translateY(-2px);
 }
 
 .offer-card h3 {
-    margin-top: 0;
-    margin-bottom: 14px;
-    font-size: 22px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.3;
 }
+
+/* ─── Service Tags ────────────────────────────────────────── */
 
 .service-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 18px;
+    gap: 0.4rem;
 }
 
 .service-tag {
     background: #252525;
-    color: #cfcfcf;
-    padding: 4px 10px;
-    border-radius: 4px;
-    font-size: 13px;
+    color: #aaaaaa;
+    border: 1px solid #333;
+    border-radius: 5px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.74rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
 }
+
+/* ─── Price & Duration ────────────────────────────────────── */
 
 .offer-price {
-    color: #ff3c1f;
-    font-size: 34px;
-    font-weight: bold;
-    margin-bottom: 12px;
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #e63232;
+    letter-spacing: -0.02em;
+    margin-top: 0.25rem;
 }
 
+.offer-duration {
+    font-size: 0.8rem;
+    color: #777;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* ─── Status Badge ────────────────────────────────────────── */
+
 .status {
-    display: inline-block;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 13px;
-    margin-bottom: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    width: fit-content;
+    letter-spacing: 0.02em;
 }
 
 .status.active {
-    background: #163d1e;
-    color: #54ff7a;
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.25);
 }
 
 .status.inactive {
-    background: #3d1717;
-    color: #ff6565;
+    background: rgba(156, 163, 175, 0.1);
+    color: #6b7280;
+    border: 1px solid rgba(156, 163, 175, 0.2);
 }
+
+/* ─── Card Actions ────────────────────────────────────────── */
 
 .offer-actions {
     display: flex;
-    gap: 12px;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 0.75rem;
+    border-top: 1px solid #222;
 }
 
-.offer-actions button {
+.edit-btn,
+.delete-btn {
     flex: 1;
-    padding: 14px;
-    border-radius: 10px;
-    background: transparent;
-    border: 1px solid #555;
-    color: white;
+    padding: 0.5rem 0;
+    border-radius: 7px;
+    font-size: 0.82rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: 0.2s;
-    font-size: 15px;
+    border: none;
+    transition: background 0.15s, color 0.15s;
 }
 
-.offer-actions button:hover {
-    background: #2a2a2a;
+.edit-btn {
+    background: #252525;
+    color: #dddddd;
 }
 
 .edit-btn:hover {
-    border-color: #4d9eff;
+    background: #2e2e2e;
+    color: #ffffff;
+}
+
+.delete-btn {
+    background: rgba(230, 50, 50, 0.1);
+    color: #e63232;
 }
 
 .delete-btn:hover {
-    border-color: #ff5252;
+    background: rgba(230, 50, 50, 0.2);
 }
 
-/* ========================= */
-/* EDIT OFFER FORM */
-/* ========================= */
+/* ─── Edit / Create Form ──────────────────────────────────── */
 
 .edit-offer-container {
-    background: #0d0d0d;
     min-height: 100vh;
-    padding: 30px;
-    color: white;
-    font-family: Arial, Helvetica, sans-serif;
+    background: #111111;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 2.5rem 1.5rem;
 }
 
 .edit-offer-form {
-    max-width: 560px;
-    background: #1f1f1f;
-    border: 1px solid #333;
-    border-radius: 10px;
-    padding: 24px;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 14px;
+    padding: 2rem 2.25rem;
+    width: 100%;
+    max-width: 640px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
 .edit-offer-form h2 {
-    margin-top: 0;
-    margin-bottom: 28px;
-    font-size: 20px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.75rem 0;
 }
 
 .edit-offer-form label {
-    display: block;
-    margin-bottom: 8px;
-    margin-top: 18px;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: #888;
-    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 0.5rem;
 }
 
 .edit-offer-form input,
 .edit-offer-form textarea {
+    background: #111;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.92rem;
+    padding: 0.6rem 0.85rem;
+    outline: none;
+    transition: border-color 0.15s;
     width: 100%;
     box-sizing: border-box;
-    background: #292929;
-    border: 1px solid #444;
-    color: white;
-    border-radius: 9px;
-    padding: 11px 13px;
-    font-size: 15px;
-    outline: none;
+    font-family: inherit;
+}
+
+.edit-offer-form input:focus,
+.edit-offer-form textarea:focus {
+    border-color: #e63232;
 }
 
 .edit-offer-form textarea {
-    resize: none;
-    min-height: 88px;
+    resize: vertical;
+    min-height: 90px;
 }
 
+/* ─── Price / Duration / Status Row ──────────────────────── */
+
 .price-status-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1;
+    min-width: 100px;
+}
+
+.price-box label {
+    margin-top: 0;
+}
+
+.price-box input {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.status-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.status-box label {
+    margin-top: 0;
 }
 
 .status-container {
     display: flex;
-    gap: 12px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
 }
 
 .status-btn {
     flex: 1;
-    background: #292929;
-    border: 1px solid #555;
-    color: #888;
-    border-radius: 9px;
-    padding: 11px;
+    padding: 0.55rem 1rem;
+    border: none;
+    background: #111;
+    color: #666;
+    font-size: 0.82rem;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 14px;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
 }
 
 .status-btn.active {
-    border-color: #249c46;
-    color: #35d363;
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
 }
 
 .status-btn.inactive {
-    border-color: #ff3c3c;
-    color: #ff3c3c;
-    background: rgba(255, 60, 60, 0.08);
+    background: rgba(230, 50, 50, 0.12);
+    color: #e63232;
 }
 
-.status-btn.inactive:hover {
-    background: rgba(255, 60, 60, 0.15);
-}
+/* ─── Services Selection ──────────────────────────────────── */
 
 .services-select {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
 }
 
 .service-btn {
-    background: #2b2b2b;
-    color: #aaa;
-    border: 1px solid #555;
-    border-radius: 999px;
-    padding: 6px 13px;
+    background: #111;
+    border: 1px solid #2a2a2a;
+    color: #888;
+    border-radius: 7px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 14px;
+    transition: all 0.15s;
+}
+
+.service-btn:hover {
+    border-color: #444;
+    color: #ccc;
 }
 
 .service-btn.selected {
-    color: #ff3c3c;
-    border-color: #ff3c3c;
-    background: rgba(255, 60, 60, 0.08);
+    background: rgba(230, 50, 50, 0.12);
+    border-color: #e63232;
+    color: #e63232;
 }
+
+/* ─── Form Actions ────────────────────────────────────────── */
 
 .form-actions {
     display: flex;
+    gap: 0.75rem;
     justify-content: flex-end;
-    gap: 12px;
-    margin-top: 25px;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #222;
 }
 
-.cancel-btn,
-.save-btn {
-    background: transparent;
-    color: white;
-    border: 1px solid #666;
-    border-radius: 9px;
-    padding: 12px 24px;
+.cancel-btn {
+    background: #252525;
+    border: 1px solid #333;
+    color: #aaa;
+    border-radius: 8px;
+    padding: 0.55rem 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 600;
     cursor: pointer;
-    font-size: 15px;
+    transition: background 0.15s, color 0.15s;
 }
 
-.cancel-btn:hover,
-.save-btn:hover {
-    background: #2a2a2a;
+.cancel-btn:hover {
+    background: #2e2e2e;
+    color: #fff;
 }
+
+.save-btn {
+    background: #e63232;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 0.55rem 1.5rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.12s;
+}
+
+.save-btn:hover {
+    background: #c92828;
+    transform: translateY(-1px);
+}
+
+/* ─── Delete Modal ────────────────────────────────────────── */
 
 .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
-
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    z-index: 1000;
+    justify-content: center;
+    z-index: 999;
 }
 
 .delete-modal {
-    width: 340px;
-    background: #222;
-    border: 1px solid #4a4a4a;
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
     border-radius: 14px;
-    padding: 30px;
+    padding: 2rem 2.25rem;
+    width: 100%;
+    max-width: 400px;
     text-align: center;
-    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .delete-icon {
-    font-size: 30px;
-    margin-bottom: 18px;
-    color: #d0d0d0;
+    font-size: 2rem;
+    background: rgba(230, 50, 50, 0.1);
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.25rem;
 }
 
 .delete-modal h2 {
-    margin: 0 0 15px;
-    font-size: 30px;
-    font-weight: 600;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
 }
 
 .delete-modal p {
-    color: #9d9d9d;
-    font-size: 15px;
-    line-height: 1.35;
-    margin-bottom: 30px;
+    font-size: 0.88rem;
+    color: #888;
+    line-height: 1.55;
+    margin: 0;
 }
 
 .modal-actions {
     display: flex;
-    gap: 12px;
+    gap: 0.75rem;
+    width: 100%;
+    margin-top: 0.5rem;
 }
 
 .modal-actions button {
     flex: 1;
-    padding: 12px;
-
-    background: transparent;
-    border: 1px solid #666;
-    border-radius: 10px;
-
-    color: white;
-    font-size: 15px;
+    padding: 0.6rem;
+    border-radius: 8px;
+    font-size: 0.88rem;
     font-weight: 600;
-
     cursor: pointer;
-    transition: 0.2s;
+    border: 1px solid #333;
+    background: #252525;
+    color: #aaa;
+    transition: background 0.15s, color 0.15s;
 }
 
 .modal-actions button:hover {
-    background: #303030;
+    background: #2e2e2e;
+    color: #fff;
 }
 
 .confirm-delete-btn {
-    border-color: #ff4d4d;
-    color: #ff4d4d;
+    background: rgba(230, 50, 50, 0.15) !important;
+    border-color: #e63232 !important;
+    color: #e63232 !important;
 }
 
 .confirm-delete-btn:hover {
-    background: rgba(255, 77, 77, 0.08);
+    background: rgba(230, 50, 50, 0.28) !important;
 }
