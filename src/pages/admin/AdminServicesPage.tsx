@@ -1,5 +1,5 @@
-import {useEffect, useState} from "react";
-import {createService, deleteService, getServices, IService, updateService} from "../../api/services.ts";
+import { useEffect, useState } from "react";
+import { createService, deleteService, getServices, IService, updateService } from "../../api/services.ts";
 import "../../css/AdminServicePage.css";
 
 interface ServiceFormProps {

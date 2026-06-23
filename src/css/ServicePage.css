@@ -138,3 +138,65 @@
 .breadcrumb-active {
     color: #ccc;
 }
+
+body.light-mode .services-page {
+    background-color: #f5f5f5;
+    color: #111111;
+}
+
+body.light-mode .services h2 {
+    color: #111111;
+}
+
+body.light-mode .description {
+    color: #555555;
+}
+
+body.light-mode .service-card {
+    background-color: #ffffff;
+    border-color: #e0e0e0;
+}
+
+body.light-mode .service-card:hover {
+    border-color: #ff3c00;
+}
+
+body.light-mode .icon-wrap {
+    background: #eaeaea;
+}
+
+body.light-mode .service-card h3 {
+    color: #111111;
+}
+
+body.light-mode .service-card p {
+    color: #555555;
+}
+
+body.light-mode .divider {
+    border-top-color: #eaeaea;
+}
+
+body.light-mode .offer-price {
+    color: #111111;
+}
+
+body.light-mode .offer-duration {
+    color: #555555;
+}
+
+body.light-mode .breadcrumb {
+    color: #999999;
+}
+
+body.light-mode .breadcrumb span:first-child {
+    color: #555555;
+}
+
+body.light-mode .breadcrumb span:first-child:hover {
+    color: #111111;
+}
+
+body.light-mode .breadcrumb-active {
+    color: #222222;
+}
