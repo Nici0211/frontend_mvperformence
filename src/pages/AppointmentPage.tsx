@@ -30,6 +30,7 @@ import AuthService from "../service/AuthService";
 import { createAppointment } from "../api/appointmentApi";
 import { getServices, IService } from "../api/services";
 import { getTimeslots, ITimeslot } from "../api/timeslotApi";
+import { isValidAustrianPlate } from "../utils/validation";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
@@ -53,9 +54,9 @@ export default function AppointmentPage() {
     const customer   = AuthService.getKunde();
     const isLoggedIn = AuthService.isLoggedIn();
 
-    const [activeStep, setActiveStep]           = useState(0);
-    const [selectedService, setSelectedService] = useState("");
-    const [selectedTime, setSelectedTime]       = useState("");
+    const [activeStep, setActiveStep]             = useState(0);
+    const [selectedServices, setSelectedServices] = useState<string[]>([]);
+    const [selectedTime, setSelectedTime]         = useState("");
     const [submitted, setSubmitted]             = useState(false);
     const [loading, setLoading]                 = useState(false);
     const [errorMsg, setErrorMsg]               = useState<string | null>(null);
@@ -114,11 +115,12 @@ export default function AppointmentPage() {
      * Each step has its own required fields that must be filled.
      */
     const canGoNext = (): boolean => {
-        if (activeStep === 0) return !!selectedService;
+        if (activeStep === 0) return selectedServices.length > 0;
         if (activeStep === 1) return !!form.date && !!selectedTime;
         if (activeStep === 2)
             return !!(form.firstName && form.lastName && form.email &&
-                form.phone && form.brand && form.model && form.licensePlate);
+                form.phone && form.brand && form.model && form.licensePlate &&
+                isValidAustrianPlate(form.licensePlate) && form.licensePlate.trim() !== "");
         return true;
     };
 
@@ -132,6 +134,16 @@ export default function AppointmentPage() {
     };
 
     const handleBack = () => setActiveStep((s) => s - 1);
+
+    /**
+     * Toggles a service in the multi-select. Services can be added or
+     * removed from the selection by clicking their card again.
+     */
+    const toggleService = (title: string) => {
+        setSelectedServices((prev) =>
+            prev.includes(title) ? prev.filter((s) => s !== title) : [...prev, title]
+        );
+    };
 
     /**
      * Submits the appointment request to the backend.
@@ -149,7 +161,7 @@ export default function AppointmentPage() {
             await createAppointment({
                 customerId:   customer?.id ?? null,
                 customerName: `${form.firstName} ${form.lastName}`,
-                serviceType:  selectedService,
+                serviceType:  selectedServices.join(", "),
                 brand:        form.brand,
                 model:        form.model,
                 year:         form.buildYear ? parseInt(form.buildYear) : null,
@@ -195,7 +207,7 @@ export default function AppointmentPage() {
                 Welche Leistung benötigen Sie?
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                Wählen Sie eine Leistung aus unserem Angebot.
+                Wählen Sie eine oder mehrere Leistungen aus unserem Angebot.
             </Typography>
 
             {dataLoading ? (
@@ -212,11 +224,11 @@ export default function AppointmentPage() {
                         <Grid key={s.id ?? s.title} size={{ xs: 12, sm: 6, md: 4 }}>
                             <Card
                                 variant="outlined"
-                                onClick={() => setSelectedService(s.title)}
+                                onClick={() => toggleService(s.title)}
                                 sx={{
                                     cursor: "pointer",
-                                    borderColor: selectedService === s.title ? "primary.main" : "divider",
-                                    bgcolor:     selectedService === s.title ? "rgba(198,40,40,0.07)" : "background.paper",
+                                    borderColor: selectedServices.includes(s.title) ? "primary.main" : "divider",
+                                    bgcolor:     selectedServices.includes(s.title) ? "rgba(198,40,40,0.07)" : "background.paper",
                                     transition:  "border-color 150ms, background-color 150ms",
                                     "&:hover": { borderColor: "primary.light" },
                                 }}
@@ -353,7 +365,16 @@ export default function AppointmentPage() {
                     <TextField label="Baujahr"     value={form.buildYear}    onChange={set("buildYear")}    fullWidth />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 8 }}>
-                    <TextField label="Kennzeichen" value={form.licensePlate} onChange={set("licensePlate")} fullWidth required />
+                    <TextField
+                        label="Kennzeichen"
+                        value={form.licensePlate}
+                        onChange={set("licensePlate")}
+                        fullWidth
+                        required
+                        placeholder="z.B. W-12345AB"
+                        error={form.licensePlate.trim() !== "" && !isValidAustrianPlate(form.licensePlate)}
+                        helperText={form.licensePlate.trim() !== "" && !isValidAustrianPlate(form.licensePlate) ? "Ungültiges österreichisches Kennzeichen (z.B. W-12345AB)" : ""}
+                    />
                 </Grid>
             </Grid>
 
@@ -387,8 +408,8 @@ export default function AppointmentPage() {
                         </Typography>
                         <Grid container spacing={1}>
                             <Grid size={{ xs: 6 }}>
-                                <Typography variant="body2" color="text.secondary">Leistung</Typography>
-                                <Typography variant="body1" fontWeight={600}>{selectedService}</Typography>
+                                <Typography variant="body2" color="text.secondary">Leistungen</Typography>
+                                <Typography variant="body1" fontWeight={600}>{selectedServices.join(", ")}</Typography>
                             </Grid>
                             <Grid size={{ xs: 3 }}>
                                 <Typography variant="body2" color="text.secondary">Datum</Typography>
@@ -476,7 +497,7 @@ export default function AppointmentPage() {
                     Terminanfrage gesendet!
                 </Typography>
                 <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-                    Wir haben Ihre Anfrage für einen <strong>{selectedService}</strong>-Termin am{" "}
+                    Wir haben Ihre Anfrage für <strong>{selectedServices.join(", ")}</strong> am{" "}
                     <strong>{form.date ? new Date(form.date).toLocaleDateString("de-AT") : ""}</strong> um{" "}
                     <strong>{selectedTime} Uhr</strong> erhalten.
                     <br />
